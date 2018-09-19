@@ -1,0 +1,1481 @@
+<html>
+<head>
+</head>
+<body>
+
+<div data-bind="visible: showHub">
+<h2>CPK Basketball Sim</h2>
+<br>
+Save file name:
+<br>
+<input data-bind="textInput: fileName"></input>
+<br>
+<br>
+Choose a team:
+<br>
+<select data-bind="options: teamsTemp, optionsText: 'full', optionsValue: 'tid', selectedOptions: userId"></select>
+<br>
+<br>
+<button data-bind="click: startFile">Start</button>
+</div>
+
+<div data-bind="visible: showNav">
+<ul>
+	<li data-bind="click: pageHome">Home</li>
+	<li data-bind="click: pageRoster">Roster</li>
+	<li data-bind="click: pageRotation">Rotation</li>
+	<li data-bind="click: pageTrade">Trade</li>
+	<li data-bind="click: pageTradeBlock">Trade Block</li>
+	<li data-bind="click: pageFreeAgents">Free Agents</li>
+</div>
+
+<div data-bind="visible: showHome">
+<!-- ko with: teams()[userId()] -->
+<h2 data-bind="text: full"></h2>
+<!-- /ko -->
+<!-- ko foreach: players()[userId()] -->
+<p data-bind="text: name"></p>
+<!-- /ko -->
+</div>
+
+<div data-bind="visible: showRoster">
+<select data-bind="options: teams, optionsText: 'full', optionsValue: 'tid', value: rosterVal, selectedOptions: rosterId, event: { change: rosterCh }"></select>
+<br>
+<br>
+<!-- ko with: teams()[rosterId()] -->
+<h3 data-bind="text: full"></h3>
+<!-- /ko -->
+<br>
+<img id="imgTeam" height="100" width="150" src="http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043"></img>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Pos</th>
+			<th>Ovr</th>
+			<th>Pot</th>
+			<th>Age</th>
+			<th>Contract</th>
+			<th>Post O</th>
+			<th>Ins O</th>
+			<th>Mid</th>
+			<th>TP</th>
+			<th>FT</th>
+			<th>Pss</th>
+			<th>Drb</th>
+			<th>Reb</th>
+			<th>Ins D</th>
+			<th>Per D</th>
+			<th>Ath</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: players()[rosterId()]">
+		<tr>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+			<td data-bind="text: $root.getPot($data)"></td>
+			<td data-bind="text: $root.getAge($data)"></td>
+			<td data-bind="text: $root.getContract($data)"></td>
+			<td data-bind="text: $root.getPostO($data)"></td>
+			<td data-bind="text: $root.getInsO($data)"></td>
+			<td data-bind="text: $root.getMid($data)"></td>
+			<td data-bind="text: $root.getTP($data)"></td>
+			<td data-bind="text: $root.getFT($data)"></td>
+			<td data-bind="text: $root.getPss($data)"></td>
+			<td data-bind="text: $root.getDrb($data)"></td>
+			<td data-bind="text: $root.getReb($data)"></td>
+			<td data-bind="text: $root.getInsD($data)"></td>
+			<td data-bind="text: $root.getPerD($data)"></td>
+			<td data-bind="text: $root.getAth($data)"></td>
+			<td data-bind="visible: $root.showPlayerTrade"><button data-bind="click: $root.goToPlayerTrade.bind($data)">Trade</button></td>
+			<td data-bind="visible: $root.showPlayerRelease"><button data-bind="click: $root.iniPlayerRelease.bind($data)">Release</button></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<div data-bind="visible: showPlayer">
+<!-- ko with: playerSel() -->
+<h3><span data-bind="text: name"></span>, <span data-bind="text: pos"></span></h3>
+<br>
+<img id="imgPlayer" height="100" width="150" src= "http://vignette2.wikia.nocookie.net/uncyclopedia/images/4/44/White_square.png/revision/latest?cb=20061003200043"></img>
+<br>
+<h4>Bio</h4>
+<p>Age: <span data-bind="text: $root.getAge($data)"></span></p>
+<p>Height: <span data-bind="text: $root.getHeight($data)"></span></p>
+<p>Weight: <span data-bind="text: weight"></span> lb</p>
+<p><span data-bind="text: $root.getDraft($data)"></span></p>
+<p>Contract: <span data-bind="text: $root.getContract($data)"></span></p>
+<h4>Attributes</h4>
+<p>Strength: <span data-bind="text: ratings[0].stre"></span></p>
+<p>Speed: <span data-bind="text: ratings[0].spd"></span></p>
+<p>Jumping: <span data-bind="text: ratings[0].jmp"></span></p>
+<p>Stamina: <span data-bind="text: ratings[0].endu"></span></p>
+<p>Interior Defence: <span data-bind="text: ratings[0].hgt"></span></p>
+<p>Perimeter Defence: <span data-bind="text: ratings[0].stl"></span></p>
+<br>
+<p>Free Throw: <span data-bind="text: ratings[0].ft"></span></p>
+<p>Field Goal: <span data-bind="text: ratings[0].fg"></span></p>
+<p>Three Point: <span data-bind="text: ratings[0].tp"></span></p>
+<p>Passing: <span data-bind="text: ratings[0].pss"></span></p>
+<p>Dribbling: <span data-bind="text: ratings[0].drb"></span></p>
+<br>
+<p>Inside: <span data-bind="text: ratings[0].ins"></span></p>
+<p>Dunk: <span data-bind="text: ratings[0].dnk"></span></p>
+<p>Block: <span data-bind="text: ratings[0].blk"></span></p>
+<p>Rebounding: <span data-bind="text: ratings[0].reb"></span></p>
+<!-- /ko -->
+</div>
+
+<div data-bind="visible: showRotation">
+<table border="2" class="sortable">
+	<thead>
+		<tr>
+			<th>Starter</th>
+			<th>+</th>
+			<th>-</th>
+			<th>Name</th>
+			<th>Position</th>
+			<th>Overall</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: players()[userId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.rots, event: { click: $root.rotCh($data) }"></input></td>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.rotp, event: { change: $root.rotCh2($data) }"></input></td>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.rotm, event: { change: $root.rotCh3($data) }"></input></td>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+<p><b>Starters</b></p>
+<!-- ko foreach: rots -->
+<ul>
+	<li data-bind="text: name"></li>
+</ul>
+<!-- /ko -->
+</div>
+
+<div data-bind="visible: showTrade">
+Trade away:
+<br>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Pos</th>
+			<th>Ovr</th>
+			<th>Pot</th>
+			<th>Age</th>
+			<th>Contract</th>
+			<th>Post O</th>
+			<th>Ins O</th>
+			<th>Mid</th>
+			<th>TP</th>
+			<th>FT</th>
+			<th>Pss</th>
+			<th>Drb</th>
+			<th>Reb</th>
+			<th>Ins D</th>
+			<th>Per D</th>
+			<th>Ath</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: players()[userId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.tradeSel"></input></td>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+			<td data-bind="text: $root.getPot($data)"></td>
+			<td data-bind="text: $root.getAge($data)"></td>
+			<td data-bind="text: $root.getContract($data)"></td>
+			<td data-bind="text: $root.getPostO($data)"></td>
+			<td data-bind="text: $root.getInsO($data)"></td>
+			<td data-bind="text: $root.getMid($data)"></td>
+			<td data-bind="text: $root.getTP($data)"></td>
+			<td data-bind="text: $root.getFT($data)"></td>
+			<td data-bind="text: $root.getPss($data)"></td>
+			<td data-bind="text: $root.getDrb($data)"></td>
+			<td data-bind="text: $root.getReb($data)"></td>
+			<td data-bind="text: $root.getInsD($data)"></td>
+			<td data-bind="text: $root.getPerD($data)"></td>
+			<td data-bind="text: $root.getAth($data)"></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Year</th>
+			<th>Round</th>
+			<th>From</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: picks()[userId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.pickSel"></input></td>
+			<td data-bind="text: season"></td>
+			<td data-bind="text: round"></td>
+			<!-- ko with: $root.teams()[otid] -->
+			<td data-bind="text: abbrev"></td>
+			<!-- /ko -->
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+<select data-bind="options: teamsTrade, optionsText: 'full', optionsValue: 'tid', selectedOptions: tradeId, event: { change: tradeCh } "></select>
+<br>
+<br>
+Trade for:
+<br>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Pos</th>
+			<th>Ovr</th>
+			<th>Pot</th>
+			<th>Age</th>
+			<th>Contract</th>
+			<th>Post O</th>
+			<th>Ins O</th>
+			<th>Mid</th>
+			<th>TP</th>
+			<th>FT</th>
+			<th>Pss</th>
+			<th>Drb</th>
+			<th>Reb</th>
+			<th>Ins D</th>
+			<th>Per D</th>
+			<th>Ath</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: players()[tradeId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.tradeSelx"></input></td>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+			<td data-bind="text: $root.getPot($data)"></td>
+			<td data-bind="text: $root.getAge($data)"></td>
+			<td data-bind="text: $root.getContract($data)"></td>
+			<td data-bind="text: $root.getPostO($data)"></td>
+			<td data-bind="text: $root.getInsO($data)"></td>
+			<td data-bind="text: $root.getMid($data)"></td>
+			<td data-bind="text: $root.getTP($data)"></td>
+			<td data-bind="text: $root.getFT($data)"></td>
+			<td data-bind="text: $root.getPss($data)"></td>
+			<td data-bind="text: $root.getDrb($data)"></td>
+			<td data-bind="text: $root.getReb($data)"></td>
+			<td data-bind="text: $root.getInsD($data)"></td>
+			<td data-bind="text: $root.getPerD($data)"></td>
+			<td data-bind="text: $root.getAth($data)"></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Year</th>
+			<th>Round</th>
+			<th>From</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: picks()[tradeId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.pickSelx"></input></td>
+			<td data-bind="text: season"></td>
+			<td data-bind="text: round"></td>
+			<!-- ko with: $root.teams()[otid] -->
+			<td data-bind="text: abbrev"></td>
+			<!-- /ko -->
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+User team:
+<br>
+<!-- ko foreach: tradeSel() -->
+<p data-bind="text: name"></p>
+<!-- /ko -->
+<br>
+Trade partner:
+<br>
+<!-- ko foreach: tradeSelx() -->
+<p data-bind="text: name"></p>
+<!-- /ko -->
+<br>
+<br>
+<button data-bind="click: playerTrade">Trade</button>
+</div>
+
+<div data-bind="visible: showTradeBlock">
+<table border="2">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Name</th>
+			<th>Pos</th>
+			<th>Ovr</th>
+			<th>Pot</th>
+			<th>Age</th>
+			<th>Contract</th>
+			<th>Post O</th>
+			<th>Ins O</th>
+			<th>Mid</th>
+			<th>TP</th>
+			<th>FT</th>
+			<th>Pss</th>
+			<th>Drb</th>
+			<th>Reb</th>
+			<th>Ins D</th>
+			<th>Per D</th>
+			<th>Ath</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: players()[userId()]">
+		<tr>
+			<td><input type="checkbox" data-bind="checkedValue: $data, checked: $root.tradeBlockSel"></input></td>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+			<td data-bind="text: $root.getPot($data)"></td>
+			<td data-bind="text: $root.getAge($data)"></td>
+			<td data-bind="text: $root.getContract($data)"></td>
+			<td data-bind="text: $root.getPostO($data)"></td>
+			<td data-bind="text: $root.getInsO($data)"></td>
+			<td data-bind="text: $root.getMid($data)"></td>
+			<td data-bind="text: $root.getTP($data)"></td>
+			<td data-bind="text: $root.getFT($data)"></td>
+			<td data-bind="text: $root.getPss($data)"></td>
+			<td data-bind="text: $root.getDrb($data)"></td>
+			<td data-bind="text: $root.getReb($data)"></td>
+			<td data-bind="text: $root.getInsD($data)"></td>
+			<td data-bind="text: $root.getPerD($data)"></td>
+			<td data-bind="text: $root.getAth($data)"></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<br>
+<button data-bind="click: playerTrade3">Trade</button>
+</div>
+
+<div data-bind="visible: showFreeAgents">
+<select data-bind="options: selFa, selectedOptions: faid"></select>
+<br>
+<br>
+<table border="2">
+	<thead>
+		<tr>
+			<th>Name</th>
+			<th>Pos</th>
+			<th>Ovr</th>
+			<th>Pot</th>
+			<th>Age</th>
+			<th>Contract</th>
+			<th>Post O</th>
+			<th>Ins O</th>
+			<th>Mid</th>
+			<th>TP</th>
+			<th>FT</th>
+			<th>Pss</th>
+			<th>Drb</th>
+			<th>Reb</th>
+			<th>Ins D</th>
+			<th>Per D</th>
+			<th>Ath</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: freeAgents()[faid()]">
+		<tr>
+			<td data-bind="click: $root.goToPlayer, text: name"></td>
+			<td data-bind="text: pos"></td>
+			<td data-bind="text: $root.getOvr($data)"></td>
+			<td data-bind="text: $root.getPot($data)"></td>
+			<td data-bind="text: $root.getAge($data)"></td>
+			<td data-bind="text: $root.getContract($data)"></td>
+			<td data-bind="text: $root.getPostO($data)"></td>
+			<td data-bind="text: $root.getInsO($data)"></td>
+			<td data-bind="text: $root.getMid($data)"></td>
+			<td data-bind="text: $root.getTP($data)"></td>
+			<td data-bind="text: $root.getFT($data)"></td>
+			<td data-bind="text: $root.getPss($data)"></td>
+			<td data-bind="text: $root.getDrb($data)"></td>
+			<td data-bind="text: $root.getReb($data)"></td>
+			<td data-bind="text: $root.getInsD($data)"></td>
+			<td data-bind="text: $root.getPerD($data)"></td>
+			<td data-bind="text: $root.getAth($data)"></td>
+			<td><button data-bind="click: $root.iniSignFA.bind($data)">Sign</button></td>
+		</tr>
+	</tbody>
+</table>
+</div>
+
+<script src="codeSource.js"></script>
+<script>
+$(document).ready( function() {
+		var viewMod = {};
+		var request = indexedDB.open("cpk", 1);
+		viewMod.teams = ko.observableArray();
+		viewMod.teamsTemp = ko.observableArray();
+		viewMod.teamsTrade = ko.observableArray();
+		viewMod.players = ko.observableArray();
+		viewMod.freeAgents = ko.observableArray();
+		viewMod.picks = ko.observableArray();
+		viewMod.startingSeason = ko.observable();
+		var iniPlayers = [];
+		var iniPicks = [];
+		var iniFA = [];
+		$.getJSON("comDatabase.json", function(data) {
+			viewMod.teamsTemp(data.teams);
+			request.onupgradeneeded = function(e) {
+				var db = e.target.result;
+				var objTeams = db.createObjectStore("teams", { keyPath: "tid" });
+				for (var i = 0; i < data.teams.length; i++) {
+					objTeams.add(data.teams[i]);
+				};
+				var objPlayers = db.createObjectStore("players", { keyPath: "pid", autoIncrement: true });
+				for (var i = 0; i < data.players.length; i++) {
+					objPlayers.add(data.players[i]);
+				};
+				objPlayers.createIndex("tid", "tid", { unique: false });
+				var objSeason = db.createObjectStore("season", { autoIncrement: true });
+				objSeason.add(data.startingSeason);
+				var objPicks = db.createObjectStore("picks", { keyPath: "dpid", autoIncrement: true });
+				for (var i = 0; i < 60; i++) {
+					objPicks.add(data.picks[i]);
+				};
+				objPicks.createIndex("tid", "tid", { unique: false });
+				objPicks.createIndex("season", "season", { unique: false });
+				var objSchedule = db.createObjectStore("schedule", { keyPath: "gid", autoIncrement: true });
+				var divx = _.groupBy(data.teams,"did");
+				var conx = _.groupBy(data.teams,"cid");
+				for (var i = 0; i < 5; i++) {
+					if (i != 0) {
+						objSchedule.add({ htid: 0, atid: divx[data.teams[0].did][i].tid });
+						objSchedule.add({ htid: divx[data.teams[0].did][i].tid, atid: 0 });
+						objSchedule.add({ htid: 0, atid: divx[data.teams[0].did][i].tid });
+						objSchedule.add({ htid: divx[data.teams[0].did][i].tid, atid: 0 });
+					};
+				};
+				for (var x = 0; x < 3; x++) {
+					objSchedule.add({ htid: 0, atid: divx[0][x].tid });
+					objSchedule.add({ htid: divx[0][x].tid, atid: 0 });
+					objSchedule.add({ htid: 0, atid: divx[0][x].tid });
+					objSchedule.add({ htid: divx[0][x].tid, atid: 0 });
+					objSchedule.add({ htid: 0, atid: divx[1][x].tid });
+					objSchedule.add({ htid: divx[1][x].tid, atid: 0 });
+					objSchedule.add({ htid: 0, atid: divx[1][x].tid });
+					objSchedule.add({ htid: divx[1][x].tid, atid: 0 });
+				};
+				for (var y = 3; y < 5; y++) {
+					objSchedule.add({ htid: 0, atid: divx[0][y].tid });
+					objSchedule.add({ htid: divx[0][y].tid, atid: 0 });
+					objSchedule.add({ htid: 0, atid: divx[0][y].tid });
+					objSchedule.add({ htid: 0, atid: divx[1][y].tid });
+					objSchedule.add({ htid: divx[1][y].tid, atid: 0 });
+					objSchedule.add({ htid: divx[1][y].tid, atid: 0 });
+				};
+				for (var b = 0; b < 15; b++) {
+					objSchedule.add({ htid: 0, atid: conx[1][b].tid });
+					objSchedule.add({ htid: conx[1][b].tid, atid: 0 });
+				};
+				objSchedule.createIndex("htid", "htid", { unqiue: false });
+				objSchedule.createIndex("atid", "atid", { unique: false });
+			};
+		});
+		
+		viewMod.showHub = ko.observable();
+		viewMod.showHome = ko.observable();
+		viewMod.showNav = ko.observable();
+		viewMod.showRoster = ko.observable();
+		viewMod.showPlayer = ko.observable();
+		viewMod.showRotation = ko.observable();
+		viewMod.showTrade = ko.observable();
+		viewMod.showTradeBlock = ko.observable();
+		viewMod.showFreeAgents = ko.observable();
+		viewMod.showPlayerTrade = ko.observable();
+		viewMod.showPlayerRelease = ko.observable();
+		
+		viewMod.showHub(true);
+		viewMod.showHome(false);
+		viewMod.showNav(false);
+		viewMod.showRoster(false);
+		viewMod.showPlayer(false);
+		viewMod.showRotation(false);
+		viewMod.showTrade(false);
+		viewMod.showTradeBlock(false);
+		viewMod.showFreeAgents(false);
+		viewMod.showPlayerTrade(false);
+		viewMod.showPlayerRelease(false);
+		
+		viewMod.fileName = ko.observableArray();
+		viewMod.userId = ko.observable();
+		
+		viewMod.rosterId = ko.observable();
+		viewMod.rosterVal = ko.observable();
+		
+		viewMod.rots = ko.observableArray();
+		viewMod.rotp = ko.observableArray();
+		viewMod.rotm = ko.observableArray();
+		
+		viewMod.playerSel = ko.observable();
+		viewMod.tradeSel = ko.observableArray();
+		viewMod.tradeSelx = ko.observableArray();
+		viewMod.pickSel = ko.observableArray();
+		viewMod.pickSelx = ko.observableArray();
+		viewMod.tradeId = ko.observable();
+		
+		viewMod.tradeBlockSel = ko.observableArray();
+		
+		viewMod.selFa = ko.observableArray(["G", "PG", "SG", "GF", "F", "SF", "PF", "FC", "C"]);
+		viewMod.faid = ko.observable();
+		
+		viewMod.startFile = function() {
+			if (viewMod.fileName() == "") {
+				alert("Please name the save file");
+			} else {
+				var db = request.result;
+				var pathTeams = db.transaction(["teams"]).objectStore("teams");
+				var transTeams = pathTeams.openCursor();
+				transTeams.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						var t = viewMod.teamsTrade;
+						var teamsArray = viewMod.teams;
+						teamsArray.push(cursor.value);
+						if (cursor.value.tid != viewMod.userId()) {
+							t.push(cursor.value);
+						};
+						cursor.continue();
+					};
+				};
+				var pathPlayers = db.transaction(["players"]).objectStore("players").index("tid");
+				var transPlayers = pathPlayers.openCursor();
+				transPlayers.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						iniPlayers.push(cursor.value);
+						cursor.continue();
+					};
+					viewMod.players(_.groupBy(iniPlayers,"tid"));
+				};
+				var pathSeason = db.transaction(["season"]).objectStore("season");
+				var transSeason = pathSeason.get(1);
+				transSeason.onsuccess = function(e) {
+					viewMod.startingSeason(e.target.result);
+				};
+				var pathPicks = db.transaction(["picks"], "readwrite").objectStore("picks").index("tid");
+				var transPicks = pathPicks.openCursor();
+				transPicks.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						iniPicks.push(cursor.value);
+						cursor.continue();
+					};
+					viewMod.picks(_.groupBy(iniPicks,"tid"));
+				};
+				var pathPlayers2 = db.transaction(["players"]).objectStore("players").index("tid");
+				var rangeFA = IDBKeyRange.only(-1);
+				var transPlayers2 = pathPlayers2.openCursor(rangeFA);
+				transPlayers2.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						iniFA.push(cursor.value);
+						cursor.continue();
+					};
+					viewMod.freeAgents(_.groupBy(iniFA,"pos"));
+				};
+				viewMod.showHub(false);
+				viewMod.showHome(true);
+				viewMod.showNav(true);
+			};
+		};
+		
+		viewMod.pageHome = function() {
+			viewMod.showRoster(false);
+			viewMod.showPlayer(false);
+			viewMod.showRotation(false);
+			viewMod.showTrade(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showFreeAgents(false);
+			viewMod.showHome(true);
+		};
+		
+		viewMod.pageRoster = function() {
+			viewMod.showHome(false);
+			viewMod.showPlayer(false);
+			viewMod.showRotation(false);
+			viewMod.rosterVal(viewMod.userId());
+			viewMod.showTrade(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showFreeAgents(false);
+			viewMod.showPlayerRelease(true);
+			viewMod.showPlayerTrade(true);
+			viewMod.showRoster(true);
+		};
+		
+		viewMod.pageRotation = function() {
+			viewMod.showHome(false);
+			viewMod.showRoster(false);
+			viewMod.showPlayer(false);
+			viewMod.showTrade(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showFreeAgents(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showRotation(true);
+		};
+		
+		viewMod.pageTrade = function() {
+			viewMod.showHome(false);
+			viewMod.showRoster(false);
+			viewMod.showPlayer(false);
+			viewMod.showRotation(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showFreeAgents(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.tradeSel([]);
+			viewMod.tradeSelx([]);
+			viewMod.showTrade(true);
+		};
+		
+		viewMod.pageTradeBlock = function() {
+			viewMod.showHome(false);
+			viewMod.showRoster(false);
+			viewMod.showPlayer(false);
+			viewMod.showRotation(false);
+			viewMod.showTrade(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.showFreeAgents(false);
+			viewMod.tradeBlockSel([]);
+			viewMod.showTradeBlock(true);
+		};
+		
+		viewMod.pageFreeAgents = function() {
+			viewMod.showHome(false);
+			viewMod.showRoster(false);
+			viewMod.showPlayer(false);
+			viewMod.showRotation(false);
+			viewMod.showTrade(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.tradeBlockSel([]);
+			viewMod.faid("G");
+			viewMod.showFreeAgents(true);
+		};
+		
+		viewMod.rosterCh = function() {
+			document.getElementById("imgTeam").src = viewMod.teams()[viewMod.rosterVal()].imgURL;
+			if (viewMod.rosterId() == viewMod.userId()) {
+				viewMod.showPlayerRelease(true);
+				viewMod.showPlayerTrade(true);
+			} else {
+				viewMod.showPlayerRelease(false);
+			};
+		};
+		
+		viewMod.tradeCh = function() {
+			viewMod.tradeSelx([]);
+		};
+		
+		viewMod.rotCh = function(player) {
+			var rots = viewMod.rots();
+			var rotp = viewMod.rotp();
+			var rotm = viewMod.rotm();
+			if (rots.length > 5) {
+				alert("The starting lineup may only consist of 5 players");
+				viewMod.rots([]);
+			};
+			for (var i = 0; i < rotp.length; i++) {
+				if (player.name == rotp[i].name) {
+					alert("Please ensure that only one option is selected for each player");
+					viewMod.rots([]);
+				};
+			};
+			for (var i = 0; i < rotm.length; i++) {
+				if (player.name == rotm[i].name) {
+					alert ("Please ensure that only one option is selected for each player");
+					viewMod.rots([]);
+				};
+			};
+		};
+		
+		viewMod.rotCh2 = function(player) {
+			var rots = viewMod.rots();
+			var rotp = viewMod.rotp();
+			var rotm = viewMod.rotm();
+			for (var i = 0; i < rotm.length; i++) {
+				if (player.name == rotm[i].name) {
+					alert("Please ensure that only one option is selected for each player");
+					viewMod.rotp([]);
+				};
+			};
+			for (var i = 0; i < rots.length; i++) {
+				if (player.name == rots[i].name) {
+					alert("Please ensure that only one option is selected for each player");
+					viewMod.rotp([]);
+				};
+			};
+		};
+		
+		viewMod.rotCh3 = function(player) {
+			var rots = viewMod.rots();
+			var rotp = viewMod.rotp();
+			var rotm = viewMod.rotm();
+			for (var i = 0; i < rotp.length; i++) {
+				if (player.name == rotp[i].name) {
+					alert("Please ensure that only one option is selected for each player");
+					viewMod.rotm([]);
+				};
+			};
+			for (var i = 0; i < rots.length; i++) {
+				if (player.name == rots[i].name) {
+					alert("Please ensure that only one option is selected for each player");
+					viewMod.rotm([]);
+				};
+			};
+		};
+		
+		viewMod.goToPlayer = function(player) {
+			viewMod.playerSel(player);
+			document.getElementById("imgPlayer").src = viewMod.playerSel().imgURL;
+			viewMod.showRoster(false);
+			viewMod.showRotation(false);
+			viewMod.showFreeAgents(false);
+			viewMod.showTrade(false);
+			viewMod.showTradeBlock(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showPlayer(true);
+		};
+		
+		viewMod.iniPlayerRelease = function(player) {
+			if (viewMod.players()[viewMod.userId()].length == 12) {
+				alert("Must have a minimum of 12 players");
+			} else if (confirm("Are you sure you want to release this player?") == true) {
+				viewMod.playerRelease(player);
+			};
+		};
+		
+		viewMod.playerRelease = function(player) {
+			viewMod.rots([]);
+			viewMod.rotp([]);
+			viewMod.rotm([]);
+			var db = request.result;
+			var pathPlayers = db.transaction(["players"], "readwrite").objectStore("players").index("tid");
+			var transPlayers = pathPlayers.openCursor();
+			transPlayers.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					if (cursor.value.name == player.name) {
+						cursor.value.tid = -1;
+						cursor.update(cursor.value);
+					};
+					cursor.continue();
+				};
+			};
+			var iniPlayers2 = [];
+			var iniFA = [];
+			viewMod.players([]);
+			viewMod.freeAgents([]);
+			var pathPlayers2 = db.transaction(["players"], "readonly").objectStore("players").index("tid");
+			var transPlayers2 = pathPlayers2.openCursor();
+			transPlayers2.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					iniPlayers2.push(cursor.value);
+					cursor.continue();
+				};
+				viewMod.players(_.groupBy(iniPlayers2,"tid"));
+			};
+			var pathPlayers3 = db.transaction(["players"]).objectStore("players").index("tid");
+			var rangeFA = IDBKeyRange.only(-1);
+			var transPlayers3 = pathPlayers3.openCursor(rangeFA);
+			transPlayers3.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					iniFA.push(cursor.value);
+					cursor.continue();
+				};
+				viewMod.freeAgents(_.groupBy(iniFA,"pos"));
+			};
+		};
+	
+		viewMod.iniSignFA = function(player) {
+			if (viewMod.players()[viewMod.userId()].length == 15) {
+				alert("Roster is already at the player limit");
+			} else if (confirm("Are you sure you want to sign this player?") == true) {
+				viewMod.signFA(player);
+			};
+		};
+		
+		viewMod.signFA = function(player) {
+			var db = request.result;
+			var pathPlayers = db.transaction(["players"], "readwrite").objectStore("players").index("tid");
+			var transPlayers = pathPlayers.openCursor();
+			transPlayers.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					if (cursor.value.name == player.name) {
+						cursor.value.tid = viewMod.userId();
+						cursor.update(cursor.value);
+					};
+					cursor.continue();
+				};
+			};
+			var iniPlayers = [];
+			var iniFA = [];
+			viewMod.players([]);
+			viewMod.freeAgents([]);
+			var pathPlayers2 = db.transaction(["players"]).objectStore("players").index("tid");
+			var transPlayers2 = pathPlayers2.openCursor();
+			transPlayers2.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					iniPlayers.push(cursor.value);
+					cursor.continue();
+				};
+				viewMod.players(_.groupBy(iniPlayers,"tid"));
+			};
+			var pathPlayers3 = db.transaction(["players"]).objectStore("players").index("tid");
+			var rangeFA = IDBKeyRange.only(-1);
+			var transPlayers3 = pathPlayers3.openCursor(rangeFA);
+			transPlayers3.onsuccess = function(e) {
+				var cursor = e.target.result;
+				if (cursor) {
+					iniFA.push(cursor.value);
+					cursor.continue();
+				};
+				viewMod.freeAgents(_.groupBy(iniFA,"pos"));
+			};
+			viewMod.showFreeAgents(false);
+			viewMod.showPlayerTrade(true);
+			viewMod.showPlayerRelease(true);
+			viewMod.showRoster(true);
+		};
+		
+		viewMod.goToPlayerTrade = function(player) {
+			viewMod.tradeSel.push(player);
+			viewMod.showRoster(false);
+			viewMod.showPlayerRelease(false);
+			viewMod.showPlayerTrade(false);
+			viewMod.showTrade(true);
+		};
+		
+		viewMod.playerTrade = function() {
+			var k = 0;
+			var tradeValue = 0;
+			while (k < viewMod.tradeSel().length) {
+				tradeValue += viewMod.getTradeValue(viewMod.tradeSel()[k]);
+				k++;
+			};
+			var h = 0;
+			var tradeValuex = 0;
+			while (h < viewMod.tradeSelx().length) {
+				tradeValuex += viewMod.getTradeValue(viewMod.tradeSelx()[h]);
+				h++;
+			};
+			var l = 0;
+			while (l < viewMod.pickSel().length) {
+				tradeValue += viewMod.getTradePick(viewMod.pickSel()[l]);
+				l++;
+			};
+			var m = 0;
+			while (m < viewMod.pickSelx().length) {
+				tradeValuex += viewMod.getTradePick(viewMod.pickSelx()[m]);
+				m++;
+			};
+			if ((viewMod.players()[viewMod.userId()].length - viewMod.tradeSel().length) + viewMod.tradeSelx().length < 12 ||
+				(viewMod.players()[viewMod.tradeId()].length - viewMod.tradeSelx().length) + viewMod.tradeSel().length < 12 ||
+				(viewMod.players()[viewMod.tradeId()].length - viewMod.tradeSelx().length) + viewMod.tradeSel().length > 15 ||
+				(viewMod.players()[viewMod.userId()].length - viewMod.tradeSel().length) + viewMod.tradeSelx().length > 15) {
+				alert("The current trade would put one of the teams below the minimum roster requirements");
+			} else if ((tradeValuex / viewMod.tradeSelx().length) - (tradeValue / viewMod.tradeSel().length) > 5) {
+				alert("Offer rejected! Try a different trade");
+			} else {
+				alert("Trade accepted! Please review rotations");
+				viewMod.rots([]);
+				viewMod.rotp([]);
+				viewMod.rotm([]);
+				var db = request.result;
+				var pathPlayers = db.transaction(["players"], "readwrite").objectStore("players").index("tid");
+				var transPlayers = pathPlayers.openCursor();
+				transPlayers.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						for (var i = 0; i < viewMod.tradeSel().length; i++) {
+							if (cursor.value.name == viewMod.tradeSel()[i].name) {
+								cursor.value.tid = viewMod.tradeId();
+								cursor.update(cursor.value);
+							};
+						};
+						cursor.continue();
+					};
+				};
+				var pathPlayers2 = db.transaction(["players"], "readwrite").objectStore("players").index("tid");
+				var transPlayers2 = pathPlayers2.openCursor();
+				transPlayers2.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						for (var j = 0; j < viewMod.tradeSelx().length; j++) {
+							if (cursor.value.name == viewMod.tradeSelx()[j].name) {
+								cursor.value.tid = viewMod.userId();
+								cursor.update(cursor.value);
+							};
+							cursor.continue();
+						};
+					};
+				};
+				var iniPlayers3 = [];
+				viewMod.players([]);
+				var pathPlayers3 = db.transaction(["players"], "readonly").objectStore("players").index("tid");
+				var transPlayers3 = pathPlayers3.openCursor();
+				transPlayers3.onsuccess = function(e) {
+					var cursor = e.target.result;
+					if (cursor) {
+						iniPlayers3.push(cursor.value);
+						cursor.continue();
+					};
+					viewMod.players(_.groupBy(iniPlayers3,"tid"));
+					viewMod.tradeSel([]);
+					viewMod.tradeSelx([]);
+				};
+			};
+		};
+		
+		viewMod.playerTrade3 = function() {
+			alert(_.pluck(viewMod.tradeBlockSel(),"name"));
+		};
+		
+		viewMod.getTradeValue = function(player) {
+			return viewMod.getTradeOvr(player) + viewMod.getTradeAge(player) + viewMod.getTradePot(player) + viewMod.getTradeAmount(player) + viewMod.getTradeExp(player);
+		};
+		
+		viewMod.getTradePick = function(pick) {
+			return pick.tid;
+		};
+		
+		viewMod.getTradeOvr = function(player) {
+			var x = player.ratings[0];
+			var y = Math.round((( x.hgt + x.stre + x.spd + x.jmp + x.endu + x.ins + x.dnk + x.ft + x.fg + x.tp + x.blk + x.stl + x.drb + x.pss + x.reb) / 14) + 12);
+			if (y > 95) {
+				return 100;
+			} else if (y > 90) {
+				return 94;
+			} else if (y > 85) {
+				return 88;
+			} else if (y > 80) {
+				return 82;
+			} else if (y > 75) {
+				return 73;
+			} else if (y > 70) {
+				return 64;
+			} else if (y > 65) {
+				return 55;
+			} else if (y > 60) {
+				return 46;
+			} else if (y > 55) {
+				return 37;
+			} else if (y > 50) {
+				return 28;
+			} else if (y > 45) {
+				return 19;
+			} else if (y > 40) {
+				return 10;
+			} else {
+				return 1;
+			};
+		};
+		
+		viewMod.getTradeAge = function(player) {
+			if (viewMod.getAge(player) > 32) {
+				return 75;
+			} else if (viewMod.getAge(player) > 27) {
+				return 90;
+			} else if (viewMod.getAge(player) > 22) {
+				return 95;
+			} else if (viewMod.getAge(player) > 16) {
+				return 100;
+			};
+		};
+		
+		viewMod.getTradePot = function(player) {
+			var x = viewMod.getPot(player);
+			if (x == "A+" || x == "A" || x == "A-") {
+				return 100;
+			} else if (x == "B+" || x == "B" || x == "B-") {
+				return 93;
+			} else if (x == "C+" || x == "C" || x == "C-") {
+				return 80;
+			} else if (x == "D+" || x == "D" || x == "D-") {
+				return 70;
+			} else if (x == "F") {
+				return 60;
+			};
+		};
+		
+		viewMod.getTradeAmount = function(player) {
+			var x = player.contract.amount;
+			if (x > 20000) {
+				return 93;
+			} else if (x > 17000) {
+				return 94;
+			} else if (x > 14000) {
+				return 95;
+			} else if (x > 11000) {
+				return 96;
+			} else if (x > 8000) {
+				return 97;
+			} else if (x > 5000) {
+				return 98;
+			} else if (x > 2000) {
+				return 99;
+			} else {
+				return 100;
+			};
+		};
+		
+		viewMod.getTradeExp = function(player) {
+			if (player.contract.exp - viewMod.startingSeason() == 1) {
+				return 7;
+			} else {
+				return 0;
+			};
+		};
+		
+		viewMod.getOvr = function(player) {
+			var x = player.ratings[0];
+			if (Math.round((( x.hgt + x.stre + x.spd + x.jmp + x.endu + x.ins + x.dnk + x.ft + x.fg + x.tp + x.blk + x.stl + x.drb + x.pss + x.reb) / 14) + 12) > 100) {
+				return 100;
+			} else {
+				return Math.round((( x.hgt + x.stre + x.spd + x.jmp + x.endu + x.ins + x.dnk + x.ft + x.fg + x.tp + x.blk + x.stl + x.drb + x.pss + x.reb) / 14) + 12);
+			};
+		};
+		
+		viewMod.getContract = function(player) {
+			var x = player;
+			return "$" + " " + (Math.round((x.contract.amount / 1000) * 100) / 100) + " " + "m" + " " + "thru" + " " + x.contract.exp;
+		};
+		
+		viewMod.getHeight = function(player) {
+			var x = player;
+			return (Math.floor(x.hgt / 12)) + " " + "ft" + " " + (x.hgt % 12) + " " + "in";
+		};
+		
+		viewMod.getDraft = function(player) {
+			var x = player;
+			if (x.draft.round == 0) {
+				return "Draft: " + x.draft.year + " - " + "Undrafted";
+			} else {
+				return "Draft: " + x.draft.year + " - " + "Round: " + x.draft.round + " , " + "Pick: " + x.draft.pick + " " + "(" + viewMod.teams()[x.draft.teamID].full + ")";
+			};
+		};
+		
+		viewMod.getPot = function(player) {
+			var x = player.ratings[0];
+			if ((x.pot + 12) > 85) {
+				return "A+";
+			} else if ((x.pot + 12) > 80) {
+				return "A";
+			} else if ((x.pot + 12) > 75) {
+				return "A-";
+			} else if ((x.pot + 12) > 70) {
+				return "B+";
+			} else if ((x.pot + 12) > 65) {
+				return "B";
+			} else if ((x.pot + 12) > 60) {
+				return "B-";
+			} else if ((x.pot + 12) > 55) {
+				return "C+";
+			} else if ((x.pot + 12) > 50) {
+				return "C";
+			} else if ((x.pot + 12) > 45) {
+				return "C-";
+			} else if ((x.pot + 12) > 40) {
+				return "D+";
+			} else if ((x.pot + 12) > 35) {
+				return "D";
+			} else if ((x.pot + 12) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+		
+		viewMod.getAge = function(player) {
+			return viewMod.startingSeason() - player.born.year;
+		};
+		
+		viewMod.getPostO = function(player) {
+			var x = player.ratings[0];
+			if (((x.hgt + x.stre) / 2) > 85) {
+				return "A+";
+			} else if (((x.hgt + x.stre) / 2) > 80) {
+				return "A";
+			} else if (((x.hgt + x.stre) / 2) > 75) {
+				return "A-";
+			} else if (((x.hgt + x.stre) / 2) > 70) {
+				return "B+";
+			} else if (((x.hgt + x.stre) / 2) > 65) {
+				return "B";
+			} else if (((x.hgt + x.stre) / 2) > 60) {
+				return "B-";
+			} else if (((x.hgt + x.stre) / 2) > 55) {
+				return "C+";
+			} else if (((x.hgt + x.stre) / 2) > 50) {
+				return "C";
+			} else if (((x.hgt + x.stre) / 2) > 45) {
+				return "C-";
+			} else if (((x.hgt + x.stre) / 2) > 40) {
+				return "D+";
+			} else if (((x.hgt + x.stre) / 2) > 35) {
+				return "D";
+			} else if (((x.hgt + x.stre) / 2) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+		
+		viewMod.getInsO = function(player) {
+			var x = player.ratings[0];
+			if (((x.ins + x.dnk) / 2) > 85) {
+				return "A+";
+			} else if (((x.ins + x.dnk) / 2) > 80) {
+				return "A";
+			} else if (((x.ins + x.dnk) / 2) > 75) {
+				return "A-";
+			} else if (((x.ins + x.dnk) / 2) > 70) {
+				return "B+";
+			} else if (((x.ins + x.dnk) / 2) > 65) {
+				return "B";
+			} else if (((x.ins + x.dnk) / 2) > 60) {
+				return "B-";
+			} else if (((x.ins + x.dnk) / 2) > 55) {
+				return "C+";
+			} else if (((x.ins + x.dnk) / 2) > 50) {
+				return "C";
+			} else if (((x.ins + x.dnk) / 2) > 45) {
+				return "C-";
+			} else if (((x.ins + x.dnk) / 2) > 40) {
+				return "D+";
+			} else if (((x.ins + x.dnk) / 2) > 35) {
+				return "D";
+			} else if (((x.ins + x.dnk) / 2) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+		
+		viewMod.getMid = function(player) {
+			var x = player.ratings[0];
+			if ((x.fg) > 80) {
+				return "A+";
+			} else if ((x.fg) > 75) {
+				return "A";
+			} else if ((x.fg) > 70) {
+				return "A-";
+			} else if ((x.fg) > 65) {
+				return "B+";
+			} else if ((x.fg) > 60) {
+				return "B";
+			} else if ((x.fg) > 55) {
+				return "B-";
+			} else if ((x.fg) > 50) {
+				return "C+";
+			} else if ((x.fg) > 45) {
+				return "C";
+			} else if ((x.fg) > 40) {
+				return "C-";
+			} else if ((x.fg) > 35) {
+				return "D+";
+			} else if ((x.fg) > 30) {
+				return "D";
+			} else if ((x.fg) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+		
+		viewMod.getTP = function(player) {
+			var x = player.ratings[0];
+			if ((x.tp) > 80) {
+				return "A+";
+			} else if ((x.tp) > 75) {
+				return "A";
+			} else if ((x.tp) > 70) {
+				return "A-";
+			} else if ((x.tp) > 65) {
+				return "B+";
+			} else if ((x.tp) > 60) {
+				return "B";
+			} else if ((x.tp) > 55) {
+				return "B-";
+			} else if ((x.tp) > 50) {
+				return "C+";
+			} else if ((x.tp) > 45) {
+				return "C";
+			} else if ((x.tp) > 40) {
+				return "C-";
+			} else if ((x.tp) > 35) {
+				return "D+";
+			} else if ((x.tp) > 30) {
+				return "D";
+			} else if ((x.tp) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		viewMod.getFT = function(player) {
+			var x = player.ratings[0];
+			if ((x.ft) > 80) {
+				return "A+";
+			} else if ((x.ft) > 75) {
+				return "A";
+			} else if ((x.ft) > 70) {
+				return "A-";
+			} else if ((x.ft) > 65) {
+				return "B+";
+			} else if ((x.ft) > 60) {
+				return "B";
+			} else if ((x.ft) > 55) {
+				return "B-";
+			} else if ((x.ft) > 50) {
+				return "C+";
+			} else if ((x.ft) > 45) {
+				return "C";
+			} else if ((x.ft) > 40) {
+				return "C-";
+			} else if ((x.ft) > 35) {
+				return "D+";
+			} else if ((x.ft) > 30) {
+				return "D";
+			} else if ((x.ft) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		viewMod.getPss = function(player) {
+			var x = player.ratings[0];
+			if ((x.pss) > 80) {
+				return "A+";
+			} else if ((x.pss) > 75) {
+				return "A";
+			} else if ((x.pss) > 70) {
+				return "A-";
+			} else if ((x.pss) > 65) {
+				return "B+";
+			} else if ((x.pss) > 60) {
+				return "B";
+			} else if ((x.pss) > 55) {
+				return "B-";
+			} else if ((x.pss) > 50) {
+				return "C+";
+			} else if ((x.pss) > 45) {
+				return "C";
+			} else if ((x.pss) > 40) {
+				return "C-";
+			} else if ((x.pss) > 35) {
+				return "D+";
+			} else if ((x.pss) > 30) {
+				return "D";
+			} else if ((x.pss) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		viewMod.getDrb = function(player) {
+			var x = player.ratings[0];
+			if ((x.drb) > 80) {
+				return "A+";
+			} else if ((x.drb) > 75) {
+				return "A";
+			} else if ((x.drb) > 70) {
+				return "A-";
+			} else if ((x.drb) > 65) {
+				return "B+";
+			} else if ((x.drb) > 60) {
+				return "B";
+			} else if ((x.drb) > 55) {
+				return "B-";
+			} else if ((x.drb) > 50) {
+				return "C+";
+			} else if ((x.drb) > 45) {
+				return "C";
+			} else if ((x.drb) > 40) {
+				return "C-";
+			} else if ((x.drb) > 35) {
+				return "D+";
+			} else if ((x.drb) > 30) {
+				return "D";
+			} else if ((x.drb) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		viewMod.getReb = function(player) {
+			var x = player.ratings[0];
+			if ((x.reb) > 80) {
+				return "A+";
+			} else if ((x.reb) > 75) {
+				return "A";
+			} else if ((x.reb) > 70) {
+				return "A-";
+			} else if ((x.reb) > 65) {
+				return "B+";
+			} else if ((x.reb) > 60) {
+				return "B";
+			} else if ((x.reb) > 55) {
+				return "B-";
+			} else if ((x.reb) > 50) {
+				return "C+";
+			} else if ((x.reb) > 45) {
+				return "C";
+			} else if ((x.reb) > 40) {
+				return "C-";
+			} else if ((x.reb) > 35) {
+				return "D+";
+			} else if ((x.reb) > 30) {
+				return "D";
+			} else if ((x.reb) > 25) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};		
+		
+		viewMod.getInsD = function(player) {
+			var x = player.ratings[0];
+			if (((x.hgt + x.stre + x.blk) / 3) > 85) {
+				return "A+";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 80) {
+				return "A";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 75) {
+				return "A-";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 70) {
+				return "B+";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 65) {
+				return "B";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 60) {
+				return "B-";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 55) {
+				return "C+";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 50) {
+				return "C";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 45) {
+				return "C-";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 40) {
+				return "D+";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 35) {
+				return "D";
+			} else if (((x.hgt + x.stre + x.blk) / 3) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		viewMod.getPerD = function(player) {
+			var x = player.ratings[0];
+			if (((x.spd + x.stl) / 2) > 85) {
+				return "A+";
+			} else if (((x.spd + x.stl) / 2) > 80) {
+				return "A";
+			} else if (((x.spd + x.stl) / 2) > 75) {
+				return "A-";
+			} else if (((x.spd + x.stl) / 2) > 70) {
+				return "B+";
+			} else if (((x.spd + x.stl) / 2) > 65) {
+				return "B";
+			} else if (((x.spd + x.stl) / 2) > 60) {
+				return "B-";
+			} else if (((x.spd + x.stl) / 2) > 55) {
+				return "C+";
+			} else if (((x.spd + x.stl) / 2) > 50) {
+				return "C";
+			} else if (((x.spd + x.stl) / 2) > 45) {
+				return "C-";
+			} else if (((x.spd + x.stl) / 2) > 40) {
+				return "D+";
+			} else if (((x.spd + x.stl) / 2) > 35) {
+				return "D";
+			} else if (((x.spd + x.stl) / 2) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};		
+		
+		viewMod.getAth = function(player) {
+			var x = player.ratings[0];
+			if (((x.spd + x.jmp) / 2) > 85) {
+				return "A+";
+			} else if (((x.spd + x.jmp) / 2) > 80) {
+				return "A";
+			} else if (((x.spd + x.jmp) / 2) > 75) {
+				return "A-";
+			} else if (((x.spd + x.jmp) / 2) > 70) {
+				return "B+";
+			} else if (((x.spd + x.jmp) / 2) > 65) {
+				return "B";
+			} else if (((x.spd + x.jmp) / 2) > 60) {
+				return "B-";
+			} else if (((x.spd + x.jmp) / 2) > 55) {
+				return "C+";
+			} else if (((x.spd + x.jmp) / 2) > 50) {
+				return "C";
+			} else if (((x.spd + x.jmp) / 2) > 45) {
+				return "C-";
+			} else if (((x.spd + x.jmp) / 2) > 40) {
+				return "D+";
+			} else if (((x.spd + x.jmp) / 2) > 35) {
+				return "D";
+			} else if (((x.spd + x.jmp) / 2) > 30) {
+				return "D-";
+			} else {
+				return "F";
+			};
+		};
+
+		ko.applyBindings(viewMod);
+});
+</script>
+</body>
+</html>
