@@ -4,6 +4,7 @@
 
 		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" defer></script>
 		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" defer></script>
+		<link rel="stylesheet" type="text/css" href="conall-cn.css">
 		<script type="text/javascript" src="conall-cn.js" defer></script>
 		
 		<title>Word Link - CK</title>
@@ -12,13 +13,13 @@
 	
 	<body>
 		
-		<table width="100%" height="100%">
+		<table>
 			<tbody>
 				<!-- ko foreach : grid -->
 				<tr>
 					<!-- ko foreach : $data -->
-						<td width="20%" align="center" data-bind="text : word, click : clicky, visible : $root.words, style : { backgroundColor : guessed() ? clr : 'white' }"></td>
-						<td width="20%" align="center" data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : guessed() ? clr : 'white' }"></td>
+						<td data-bind="text : word, click : clicky, visible : $root.words, style : { backgroundColor : guessed() ? clr : 'Lavender' }"></td>
+						<td data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : guessed() ? clr : 'Lavender' }"></td>
 					<!-- /ko -->
 				</tr>
 				<!-- /ko -->
@@ -26,9 +27,12 @@
 		</table>
 		
 		<button data-bind="click : gridSwitch">
-			<span data-bind="visible : words">Key view</span>
-			<span data-bind="visible : key">Word view</span>
+			<span data-bind="visible : words">Key View</span>
+			<span data-bind="visible : key">Word View</span>
 		</button>
+		
+		<span class="pts">Team A : <span data-bind="text : ptsA"></span></span>
+		<span class="pts">Team B : <span data-bind="text : ptsB"></span></span>
 		
 	</body>
 	
