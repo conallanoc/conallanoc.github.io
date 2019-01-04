@@ -15,6 +15,8 @@ var SNITCH_WORDS = 1;
 var vm = {
 	
 	grid : ko.observableArray(),
+	ptsA : ko.observable(0),
+	ptsB : ko.observable(0),
 	words : ko.observable(true),
 	key : ko.observable(false)
 	
@@ -45,22 +47,22 @@ function makeGrid(words) {
 	var elementTypes = [
 		{
 			type : "A",
-			clr : "red",
+			clr : "LightCoral",
 			numNeeded : TEAM_A_WORDS
 		},
 		{
 			type : "B",
-			clr : "blue",
+			clr : "LightSkyBlue",
 			numNeeded : TEAM_B_WORDS
 		},
 		{
 			type : "Neutral",
-			clr : "gray",
+			clr : "LightSteelBlue",
 			numNeeded : NEUTRAL_WORDS
 		},
 		{
 			type : "Snitch",
-			clr : "black",
+			clr : "Black",
 			numNeeded : SNITCH_WORDS
 		}
 	];
@@ -100,13 +102,37 @@ function makeGrid(words) {
 }
 
 function clicky(element) {
-	element.guessed(true);
-	console.log(element);
+	if (!element.guessed()) {
+		element.guessed(true);
+		if (element.team == "A") {
+			var newPtsA = vm.ptsA() + 1;
+			vm.ptsA(newPtsA);
+			if (newPtsA == TEAM_A_WORDS) {
+				setTimeout(function() {
+					alert("Congratulations Team A, you win this round! Refresh the page to play again!");
+				}, 10);
+			}
+		} else if (element.team == "B") {
+			var newPtsB = vm.ptsB() + 1;
+			vm.ptsB(newPtsB);
+			if (newPtsB == TEAM_B_WORDS) {
+				setTimeout(function() {
+					alert("Congratulations Team B, you win this round! Refresh the page to play again!");
+				}, 10);
+			}
+		} else if (element.team == "Snitch") {
+			setTimeout(function() {
+				alert("Uh oh, game over, whichever team just guessed loses! Refresh the page to play again!");
+			}, 10);
+		}
+	}
 }
 
 function gridSwitch() {
-	var newWords = !vm.words();
-	var newKey = !vm.key();
-	vm.words(newWords);
-	vm.key(newKey);
+	if (!vm.words() || confirm("**WARNING!** only the spymasters should ever use the Key View, do you want to continue?")) {
+		var newWords = !vm.words();
+		var newKey = !vm.key();
+		vm.words(newWords);
+		vm.key(newKey);
+	}
 }
