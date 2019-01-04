@@ -1,12 +1,35 @@
-<head>
+<html>
 
-	<script type="text/javascript" src="codeSource.js" defer></script>
-	<script type="text/javascript" src="sample.js" defer></script>
+	<head>
 
-</head>
-
-<body>
-	<input data-bind="value: textField"></input>
-	<p data-bind="text: textField"></p>
+		<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js" defer></script>
+		<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/knockout/3.4.2/knockout-min.js" defer></script>
+		<script type="text/javascript" src="conall-cn.js" defer></script>
+		
+		<title>Word Link - CK</title>
+		
+	</head>
 	
-</body>
+	<body>
+		
+		<table width="100%" height="100%">
+			<tbody>
+				<!-- ko foreach : grid -->
+				<tr>
+					<!-- ko foreach : $data -->
+						<td width="20%" align="center" data-bind="text : word, click : clicky, visible : $root.words, style : { backgroundColor : guessed() ? clr : 'white' }"></td>
+						<td width="20%" align="center" data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : guessed() ? clr : 'white' }"></td>
+					<!-- /ko -->
+				</tr>
+				<!-- /ko -->
+			</tbody>
+		</table>
+		
+		<button data-bind="click : gridSwitch">
+			<span data-bind="visible : words">Key view</span>
+			<span data-bind="visible : key">Word view</span>
+		</button>
+		
+	</body>
+	
+</html>
