@@ -17,8 +17,7 @@ var vm = {
 	grid : ko.observableArray(),
 	ptsRed : ko.observable(0),
 	ptsBlue : ko.observable(0),
-	words : ko.observable(true),
-	key : ko.observable(false)
+	words : ko.observable(true)
 	
 };
 
@@ -129,10 +128,7 @@ function clicky(element) {
 }
 
 function gridSwitch() {
-	if (!vm.words() || confirm("**WARNING!** only the spymasters should ever use the Key View, do you want to continue?")) {
-		var newWords = !vm.words();
-		var newKey = !vm.key();
-		vm.words(newWords);
-		vm.key(newKey);
+	if (!vm.words() || confirm("**WARNING!** only the spymasters should ever use the Colour View, do you want to continue?")) {
+		vm.words(!vm.words());
 	}
 }
