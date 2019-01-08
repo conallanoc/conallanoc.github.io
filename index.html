@@ -13,7 +13,7 @@
 	
 	<body>
 		
-		<table>
+		<table data-bind="visible : !rules()">
 			<tbody>
 				<!-- ko foreach : grid -->
 				<tr>
@@ -25,9 +25,31 @@
 			</tbody>
 		</table>
 		
+		<ul class="rulez" data-bind="visible : rules">
+			
+			<li>2 teams, Red and Blue</li>
+			<li>Each round a spymaster is chosen from each team</li>
+			<li>Spymasters take a photo of the "Colour View" on their phones, making sure NO ONE ELSE SEES THE "COLOUR VIEW"</li>
+			<li>The aim of the game is for the spymasters to have their team correctly guess all the words of their colour in the grid</li>
+			<li>Spymasters may only say one word and one number ( N ) per turn as a hint; the word they say should link N of their team's words together</li>
+			<li>The spymaster's word must be a real word and may not contain any of the words on the grid in any language</li>
+			<li>The spymasters may not say anything or display any signs of approval/disproval while their team confers</li>
+			<li>Each team may only make a maximum of N guesses on that particular turn</li>
+			<li>If a team guesses a word that does not belong to them, their turn is immediately over regardless of how many guesses they have left in that turn</li>
+			<li>If an incorrectly guessed word belongs to the other team then the other team is awarded the point for that word, if it is neutral (grey) then no points are awarded, and if it is the snitch (black) the round is immediately over and the team that guessed the snitch loses the round</li>
+			<li>The Red team gets the first turn and must guess their 9 words first to win, while the Blue team goes second and must guess their 8 words first to win</li>
+			<li>You may decide a time limit for each turn, and a round limit after which the team with most round wins wins the game</li>
+			
+		</ul>
+		
 		<button data-bind="click : gridSwitch">
 			<span data-bind="visible : words">Colour View</span>
 			<span data-bind="visible : !words()">Word View</span>
+		</button>
+		
+		<button data-bind="click : rulesSwitch">
+			<span data-bind="visible : rules">Grid</span>
+			<span data-bind="visible : !rules()">Rules</span>
 		</button>
 		
 		<span class="ptsR">Red Team : <span data-bind="text : ptsRed"></span></span>
