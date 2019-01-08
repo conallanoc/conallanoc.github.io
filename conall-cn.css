@@ -3,6 +3,11 @@
     src : url("../Otto.ttf");
 }
 
+@font-face {
+    font-family : "Custom2";
+    src : url("../Existence-Light.otf");
+}
+
 body {
 	
 	font-family : "Custom";
@@ -61,4 +66,12 @@ button {
 	text-align : center;
 	color : Blue;
 	
+}
+
+.rulez {
+	
+	font-family : "Custom2";
+	font-size : 30px;
+	color : Black;
+
 }

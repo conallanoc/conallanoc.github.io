@@ -17,7 +17,8 @@ var vm = {
 	grid : ko.observableArray(),
 	ptsRed : ko.observable(0),
 	ptsBlue : ko.observable(0),
-	words : ko.observable(true)
+	words : ko.observable(true),
+	rules : ko.observable(false)
 	
 };
 
@@ -131,4 +132,8 @@ function gridSwitch() {
 	if (!vm.words() || confirm("**WARNING!** only the spymasters should ever use the Colour View, do you want to continue?")) {
 		vm.words(!vm.words());
 	}
+}
+
+function rulesSwitch() {
+	vm.rules(!vm.rules());
 }
