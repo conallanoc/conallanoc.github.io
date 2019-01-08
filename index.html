@@ -18,8 +18,7 @@
 				<!-- ko foreach : grid -->
 				<tr>
 					<!-- ko foreach : $data -->
-						<td data-bind="text : word, click : clicky, visible : $root.words, style : { backgroundColor : guessed() ? clr : 'Lavender' }"></td>
-						<td data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : (guessed() || $root.key()) ? clr : 'Lavender' }"></td>
+						<td data-bind="text : word, click : clicky, style : { backgroundColor : (guessed() || !$root.words()) ? clr : 'Lavender' }"></td>
 					<!-- /ko -->
 				</tr>
 				<!-- /ko -->
@@ -27,8 +26,8 @@
 		</table>
 		
 		<button data-bind="click : gridSwitch">
-			<span data-bind="visible : words">Key View</span>
-			<span data-bind="visible : key">Word View</span>
+			<span data-bind="visible : words">Colour View</span>
+			<span data-bind="visible : !words()">Word View</span>
 		</button>
 		
 		<span class="ptsR">Red Team : <span data-bind="text : ptsRed"></span></span>
