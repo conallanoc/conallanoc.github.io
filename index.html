@@ -19,7 +19,7 @@
 				<tr>
 					<!-- ko foreach : $data -->
 						<td data-bind="text : word, click : clicky, visible : $root.words, style : { backgroundColor : guessed() ? clr : 'Lavender' }"></td>
-						<td data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : guessed() ? clr : 'Lavender' }"></td>
+						<td data-bind="text : team, click : clicky, visible : $root.key, style : { backgroundColor : (guessed() || $root.key()) ? clr : 'Lavender' }"></td>
 					<!-- /ko -->
 				</tr>
 				<!-- /ko -->
@@ -31,8 +31,8 @@
 			<span data-bind="visible : key">Word View</span>
 		</button>
 		
-		<span class="pts">Team A : <span data-bind="text : ptsA"></span></span>
-		<span class="pts">Team B : <span data-bind="text : ptsB"></span></span>
+		<span class="pts" color="red">Red Team : <span data-bind="text : ptsRed"></span></span>
+		<span class="pts" color="blue">Blue Team : <span data-bind="text : ptsBlue"></span></span>
 		
 	</body>
 	
