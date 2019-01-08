@@ -7,16 +7,16 @@ $(document).ready(function() {
 
 var GRID_WIDTH = 5;
 var GRID_HEIGHT = 5;
-var TEAM_A_WORDS = 9;
-var TEAM_B_WORDS = 8;
+var TEAM_RED_WORDS = 9;
+var TEAM_BLUE_WORDS = 8;
 var NEUTRAL_WORDS = 7;
-var SNITCH_WORDS = 1;
+var X_WORDS = 1;
 
 var vm = {
 	
 	grid : ko.observableArray(),
-	ptsA : ko.observable(0),
-	ptsB : ko.observable(0),
+	ptsRed : ko.observable(0),
+	ptsBlue : ko.observable(0),
 	words : ko.observable(true),
 	key : ko.observable(false)
 	
@@ -46,14 +46,14 @@ function makeGrid(words) {
 	var usedWords = [];
 	var elementTypes = [
 		{
-			type : "A",
+			type : "Red",
 			clr : "LightCoral",
-			numNeeded : TEAM_A_WORDS
+			numNeeded : TEAM_RED_WORDS
 		},
 		{
-			type : "B",
+			type : "Blue",
 			clr : "LightSkyBlue",
-			numNeeded : TEAM_B_WORDS
+			numNeeded : TEAM_BLUE_WORDS
 		},
 		{
 			type : "Neutral",
@@ -61,9 +61,9 @@ function makeGrid(words) {
 			numNeeded : NEUTRAL_WORDS
 		},
 		{
-			type : "Snitch",
+			type : "x",
 			clr : "Black",
-			numNeeded : SNITCH_WORDS
+			numNeeded : X_WORDS
 		}
 	];
 	for (var i = 0; i < elementTypes.length; i++) {
@@ -104,23 +104,23 @@ function makeGrid(words) {
 function clicky(element) {
 	if (!element.guessed()) {
 		element.guessed(true);
-		if (element.team == "A") {
-			var newPtsA = vm.ptsA() + 1;
-			vm.ptsA(newPtsA);
-			if (newPtsA == TEAM_A_WORDS) {
+		if (element.team == "Red") {
+			var newPtsRed = vm.ptsRed() + 1;
+			vm.ptsRed(newPtsRed);
+			if (newPtsRed == TEAM_RED_WORDS) {
 				setTimeout(function() {
-					alert("Congratulations Team A, you win this round! Refresh the page to play again!");
+					alert("Congratulations Red Team, you win this round! Refresh the page to play again!");
 				}, 10);
 			}
-		} else if (element.team == "B") {
-			var newPtsB = vm.ptsB() + 1;
-			vm.ptsB(newPtsB);
-			if (newPtsB == TEAM_B_WORDS) {
+		} else if (element.team == "Blue") {
+			var newPtsBlue = vm.ptsBlue() + 1;
+			vm.ptsBlue(newPtsBlue);
+			if (newPtsBlue == TEAM_BLUE_WORDS) {
 				setTimeout(function() {
-					alert("Congratulations Team B, you win this round! Refresh the page to play again!");
+					alert("Congratulations Blue Team, you win this round! Refresh the page to play again!");
 				}, 10);
 			}
-		} else if (element.team == "Snitch") {
+		} else if (element.team == "x") {
 			setTimeout(function() {
 				alert("Uh oh, game over, whichever team just guessed loses! Refresh the page to play again!");
 			}, 10);
